@@ -43,22 +43,34 @@ def ingresarNuevoProducto():
     else:
         listarProductos()
         
-def ingresarProductoExistente(diccionario, id):
-    for clave, valor in diccionario.items():
-        if clave == id:
-            
-            print(f"El valor para la clave {clave} es {valor}.")
-            break
-    else:
-        
-        print("No se encontró ningún ID que coincida con el ID proporcionado.")
-        
-            
+##def ingresarProductoExistente(diccionario, id):
+##    for clave, valor in diccionario.items():
+##        if clave == id:
+##            
+##            print(f"El valor para la clave {clave} es {valor}.")
+##            break
+##    else:
+##        
+##        print("No se encontró ningún ID que coincida con el ID proporcionado.")
+##        
+##            
             
 def eliminarProducto(diccionario):
     codigo = int(input("Ingrese el código del producto que desea a eliminar: "))
     del diccionario[codigo]
     print("El producto ha sido eliminado satisfactoriamente")
+
+
+def determinarExistenciaDelProducto(diccionario):
+    codigo = int(input("Ingrese el código del producto del cual desea saber su existencia: "))
+
+    claves = diccionario.keys()
+
+    for i in claves:
+        if i == codigo:
+            listarProductos()
+        else:
+            print("El producto no existe")
     
 
 
@@ -68,6 +80,7 @@ ingresarNuevoProducto()
 
 #id_producto= int(input("Ingrese el id del producto existente: "))
 #ingresarProductoExistente(productos,id_producto)
-eliminarProducto(productos)
+#eliminarProducto(productos)
+determinarExistenciaDelProducto(productos)
 
     
