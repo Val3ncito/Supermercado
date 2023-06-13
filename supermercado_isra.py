@@ -6,7 +6,7 @@
 • Actualizar el stock cuando se vende un producto.
 • Actualizar el precio unitario de un producto determinado en un cierto procentaje.
 ✔Determinar la existencia de un producto para poder vender la cantidad solicitada.
-• Reponer un producto cuando el stock está por debajo de un mínimo requerido.
+✔Reponer un producto cuando el stock está por debajo de un mínimo requerido.
 • Pedir los datos de un cliente para hacer envío a domicilio.
 • Determinar cuál es el artículo más vendido.
 • Eliminar del supermercado (guardarlos en un otro diccionario) los artículos que estén
@@ -33,7 +33,6 @@ def ingresarNuevoProducto():
     
     codigo = int(input("Ingrese el código del nuevo producto: "))
     valor = []
-    #almacen = {"V":"verduras","L":"lacteos","B": "bebidas","P":"panadería", "C":"carnes"}
 
     
     descripcion = input("Ingrese descripción del producto: ")
@@ -61,18 +60,7 @@ def ingresarNuevoProducto():
         ingresarNuevoProducto()
     else:
         listarProductos()
-        
-##def ingresarProductoExistente(diccionario, id):
-##    for clave, valor in diccionario.items():
-##        if clave == id:
-##            
-##            print(f"El valor para la clave {clave} es {valor}.")
-##            break
-##    else:
-##        
-##        print("No se encontró ningún ID que coincida con el ID proporcionado.")
-##        
-##            
+             
             
 def eliminarProducto(diccionario):
     codigo = int(input("Ingrese el código del producto que desea a eliminar: "))
@@ -92,55 +80,18 @@ def determinarExistenciaDelProducto(diccionario):
             print("El producto no existe")
 
 def reponerProducto(diccionario):
-    
-    
     minimo = 10
 
-    lista_claves = list(diccionario.keys())
-    lista_valores = list(diccionario.values())
-    
-    for i in lista_valores:
-        
-        """recorriendo todos los valores del diccionario"""
-        
-        for j in i:
-            
-            """ recorriendo todos los datos dentro de la lista de cada uno de los valores"""
+    for i in diccionario:
+        if diccionario[i][1]== 0:
+            print("Producto sin stock")
+        if diccionario[i][1] < minimo:
+            print("Alerta!! Reponer stock")
+ 
 
-            if stock_producto == j:
-                """  ya tengo el codigo del producto que quiero eliminar guardado en esa variable"""
-                
-                
-                posicion = lista_valores.index(i)
-                del lista_claves[posicion]
-
-                """ devuelve la posicion en la que se encuentra el codigo del producto a eliminar y esta guardado en la variable posision"""
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
-    
-
-ingresarNuevoProducto()
-
-#id_producto= int(input("Ingrese el id del producto existente: "))
+#ingresarNuevoProducto()
 #ingresarProductoExistente(productos,id_producto)
 #eliminarProducto(productos)
-determinarExistenciaDelProducto(productos)
-
+#determinarExistenciaDelProducto(productos)
+#reponerProducto(productos)
     
