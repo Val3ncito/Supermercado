@@ -58,16 +58,38 @@ def ingresarProductoExistente(diccionario, id):
         
             
             
+def eliminarProducto(diccionario,codigo_producto):
+    
+    lista_claves = list(diccionario.keys())
+    lista_valores = list(diccionario.values())
+    
+    for i in lista_valores:
+        
+        """recorriendo todos los valores del diccionario"""
+        
+        for j in i:
             
-        
-        
+            """ recorriendo todos los datos dentro de la lista de cada uno de los valores"""
+
+            if codigo_producto == j:
+                """  ya tengo el codigo del producto que quiero eliminar guardado en esa variable"""
+                
+                
+                posicion = lista_valores.index(i)
+                del lista_claves[posicion]
+
+                """ devuelve la posicion en la que se encuentra el codigo del producto a eliminar y esta guardado en la variable posision"""
+    print(lista_claves)            
+    """ me equivoque y elimina la clave en la lista no en el diccionario"""   
+    mostrarProductos()    
 
 
     
 
 ingresarNuevoProducto()
-#mostrar()
-id_producto= int(input("Ingrese el id del producto existente: "))
-ingresarProductoExistente(productos,id_producto)
-    
+#mostrarProductos()
+#id_producto= int(input("Ingrese el id del producto existente: "))
+#ingresarProductoExistente(productos,id_producto)
+eliminarProducto(productos,56)
+
     
