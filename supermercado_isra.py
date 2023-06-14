@@ -98,25 +98,11 @@ def actualizarStock(diccionario):
             stock_real = diccionario[i][1] - stock
             print("El stock real del producto es " + str(stock_real))
         
-           
+print("q hiciste valen")         
        
 
 
 
-
-
-
-
-
-
-    
-
-
-
-
-
-
- 
 
 ingresarNuevoProducto()
 #ingresarProductoExistente(productos,id_producto)
