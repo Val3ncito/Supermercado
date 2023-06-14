@@ -3,7 +3,7 @@
 ✔Agregar un nuevo producto.
 ✔Eliminar un producto dado su código.
 ✔Listar todos los productos de una forma prolija.
-• Actualizar el stock cuando se vende un producto.
+✔Actualizar el stock cuando se vende un producto.
 • Actualizar el precio unitario de un producto determinado en un cierto procentaje.
 ✔Determinar la existencia de un producto para poder vender la cantidad solicitada.
 ✔Reponer un producto cuando el stock está por debajo de un mínimo requerido.
@@ -87,11 +87,41 @@ def reponerProducto(diccionario):
             print("Producto sin stock")
         if diccionario[i][1] < minimo:
             print("Alerta!! Reponer stock")
+            
+
+def actualizarStock(diccionario):
+    descripcion = input("Ingrese descripción del producto que desea comprar: ")
+    stock = int(input("Ingrese la cantidad deseada: "))
+
+    for i in diccionario:
+        if diccionario[i][0] == descripcion:
+            stock_real = diccionario[i][1] - stock
+            print("El stock real del producto es " + str(stock_real))
+        
+           
+       
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
  
 
-#ingresarNuevoProducto()
+ingresarNuevoProducto()
 #ingresarProductoExistente(productos,id_producto)
 #eliminarProducto(productos)
 #determinarExistenciaDelProducto(productos)
 #reponerProducto(productos)
+actualizarStock(productos)
     
