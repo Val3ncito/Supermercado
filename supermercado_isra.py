@@ -7,7 +7,7 @@
 • Actualizar el precio unitario de un producto determinado en un cierto procentaje.
 ✔Determinar la existencia de un producto para poder vender la cantidad solicitada.
 ✔Reponer un producto cuando el stock está por debajo de un mínimo requerido.
-• Pedir los datos de un cliente para hacer envío a domicilio.
+✔Pedir los datos de un cliente para hacer envío a domicilio.
 • Determinar cuál es el artículo más vendido.
 • Eliminar del supermercado (guardarlos en un otro diccionario) los artículos que estén
 vencidos.
@@ -98,10 +98,7 @@ def actualizarStock(diccionario):
             stock_real = diccionario[i][1] - stock
             print("El stock real del producto es " + str(stock_real))
         
-print("q hiciste valen")         
-       
-
-
+         
 
 
 ingresarNuevoProducto()
@@ -109,5 +106,5 @@ ingresarNuevoProducto()
 #eliminarProducto(productos)
 #determinarExistenciaDelProducto(productos)
 #reponerProducto(productos)
-actualizarStock(productos)
+#actualizarStock(productos)
     
