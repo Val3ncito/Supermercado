@@ -12,14 +12,16 @@
 • Eliminar del supermercado (guardarlos en un otro diccionario) los artículos que estén
 vencidos.
 •- Simular la venta a un cliente y emitir el ticket de venta.
-•- Agregar información adicional al producto para saber si un determinado producto tiene o no
+✔ Agregar información adicional al producto para saber si un determinado producto tiene o no
 descuento.
-• Si el producto vence en una semana hacer un 10% de descuento.
+•- Si el producto vence en una semana hacer un 10% de descuento.
 • Determinar el producto más vendido dependiendo del tipo de producto.
 """
 
 
-productos={"1234":["Lechuga", "0002", "50$", "Verdura", "5/12/2023"],"5678":["Tomate", "0001", "75$", "Verdura", "7/12/2023]"}
+productos={"1234":["Lechuga", "0001", "50", "Verdura", "5/12/2023", "10"],"5678":["Tomate", "0002", "75", "Verdura", "7/12/2023]"]}
+Usuarios={"123":["Valen", "Roque Saenz Peña"], "456":["Pepe", "Cabildo"]}
+
 
 def listarProductos():
     
@@ -117,7 +119,7 @@ def reponerProducto(diccionario):
                 """ devuelve la posicion en la que se encuentra el codigo del producto a eliminar y esta guardado en la variable posision"""
 
 
-Usuarios={"123":["Valen", "Roque Saenz Peña"], "456":["Pepe", "Cabildo"]}
+
 def EnvioDomicilio(Usuarios):
     DNI=input("Ingresar DNI: ")
     valor=[]
@@ -141,7 +143,31 @@ def EnvioDomicilio(Usuarios):
 
 
 
+def Descuento(productos):
+    Codigo=input("Ingresar Código del Producto: ")
+    if len(productos.get(Codigo))==5:
+        print("El producto no tiene descuento")
+    elif len(productos.get(Codigo))!=5:
+        print("El producto tiene un descuento del "+str(productos.get(Codigo)[5])+"%")
+        Precio=int((int(productos.get(Codigo)[2]))*(int(productos.get(Codigo)[5])/100))
+        print("Precio: "+str(Precio)+"$")
 
+
+
+def DescuentoVencimiento(productos):
+    for i in productos.keys():
+        A=len(productos.get(i))
+        if A==5:
+            if productos.get(i)[4]
+            
+        elif A==!5:
+            
+
+DescuentoVencimiento(productos)
+  
+
+
+"""
 def VentaCliente(Productos):
     Medio=input("Ingresar medio de pago 1-Efectivo   2-Tarjeta de crédito/débito: ")
     if Medio==1:
@@ -154,8 +180,8 @@ def VentaCliente(Productos):
 
     else:
         print("Se canceló el pago")
-    
-    
+ 
+"""    
     
 
 
