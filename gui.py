@@ -12,6 +12,7 @@ def AgrElim():
 
     agregar = tkinter.Label(ventanaAgrElim, text='AGREGAR',bg='green',width=50,height=5).place(x=0,y=0)
     texto1 = tkinter.Entry(ventanaAgrElim).place(x=120,y=150)
+    textoFecha = tkinter.Label(ventanaAgrElim, text="XXXX/XX/XX").place(x=144,y=129)
     boton1 = tkinter.Button(ventanaAgrElim, text='Agregar').place(x=155,y=180)
     texto2 = tkinter.Entry(ventanaAgrElim).place(x=120,y=220)
     boton2 = tkinter.Button(ventanaAgrElim, text='Agregar').place(x=155,y=250)
