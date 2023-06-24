@@ -19,39 +19,40 @@ descuento.
 """
 
 
-productos={}
+from datetime import datetime, date
+from time import strftime
+
+productos = {}
+
 
 def listarProductos():
-    
     claves = productos.keys()
     for c in claves:
         dato = productos[c]
-        print (c,dato[0],dato[1],dato[2],dato[3],dato[4])
+        print(c, dato[0], dato[1], dato[2], dato[3], dato[4])
 
 
 def ingresarNuevoProducto():
-    
     codigo = int(input("Ingrese el código del nuevo producto: "))
     valor = []
 
-    
     descripcion = input("Ingrese descripción del producto: ")
     stock = int(input("Ingrese el stock de producto: "))
     precio_unitario = float(input("Ingrese el precio del producto: "))
     tipo_de_producto = "verdura"
-    fecha_de_vencimiento = "5/12/2023"
-    
-    
+    fecha_de_vencimiento = input("Ingrese fecha de vencimiento dd/mm/aa: ")
+    fecha = datetime.strptime(fecha_de_vencimiento, "%d/%m/%Y")
+
+
     valor.append(descripcion)
     valor.append(stock)
     valor.append(precio_unitario)
     valor.append(tipo_de_producto)
-    valor.append(fecha_de_vencimiento)
+    valor.append(fecha)
 
-    
+
     productos[codigo] = valor
 
-    
     print("Su producto fue añadido satisfactoriamente")
 
     nuevo_producto = int(input("Ingrese 1 para añadir nuevo producto ó 2 para salir: "))
@@ -60,8 +61,8 @@ def ingresarNuevoProducto():
         ingresarNuevoProducto()
     else:
         listarProductos()
-             
-            
+
+
 def eliminarProducto(diccionario):
     codigo = int(input("Ingrese el código del producto que desea a eliminar: "))
     del diccionario[codigo]
@@ -79,15 +80,16 @@ def determinarExistenciaDelProducto(diccionario):
         else:
             print("El producto no existe")
 
+
 def reponerProducto(diccionario):
     minimo = 10
 
     for i in diccionario:
-        if diccionario[i][1]== 0:
+        if diccionario[i][1] == 0:
             print("Producto sin stock")
         if diccionario[i][1] < minimo:
             print("Alerta!! Reponer stock")
-            
+
 
 def actualizarStock(diccionario):
     descripcion = input("Ingrese descripción del producto que desea comprar: ")
@@ -97,14 +99,28 @@ def actualizarStock(diccionario):
         if diccionario[i][0] == descripcion:
             stock_real = diccionario[i][1] - stock
             print("El stock real del producto es " + str(stock_real))
+
+
+def descuentoProducto(diccionario):
+    fecha_actual = datetime.now()
+
+    for i in diccionario:
+        fecha_vencimiento = diccionario[i][4]
+        prueba = fecha_vencimiento - fecha_actual
         
-         
+        if  int(prueba.days)<= 7 and (prueba.days)>0:
+            precio = diccionario[i][2]
+            descuento = precio * 0.1
+            diccionario[i][2] = precio - descuento
+
+    
+
 
 
 ingresarNuevoProducto()
-#ingresarProductoExistente(productos,id_producto)
-#eliminarProducto(productos)
-#determinarExistenciaDelProducto(productos)
-#reponerProducto(productos)
-#actualizarStock(productos)
-    
+# ingresarProductoExistente(productos,id_producto)
+# eliminarProducto(productos)
+# determinarExistenciaDelProducto(productos)
+# reponerProducto(productos)
+# actualizarStock(productos)
+descuentoProducto(productos)
