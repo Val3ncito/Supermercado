@@ -14,7 +14,7 @@ vencidos.
 • Simular la venta a un cliente y emitir el ticket de venta.
 • Agregar información adicional al producto para saber si un determinado producto tiene o no
 descuento.
-• Si el producto vence en una semana hacer un 10% de descuento.
+✔Si el producto vence en una semana hacer un 10% de descuento.
 • Determinar el producto más vendido dependiendo del tipo de producto.
 """
 
@@ -81,6 +81,18 @@ def determinarExistenciaDelProducto(diccionario):
             print("El producto no existe")
 
 
+def ingresarProductoExistente(diccionario):
+    codigo = int(input("Ingrese el código del producto: "))
+    cantidad = int(input("Ingrese la cantidad que desea añadir: "))
+    claves = diccionario.keys()
+
+    for i in claves:
+        if i == codigo:
+            stock_anterior = diccionario[i][1]
+            aux = stock_anterior + cantidad
+            diccionario[i][1] = aux
+    
+
 def reponerProducto(diccionario):
     minimo = 10
 
@@ -123,4 +135,5 @@ ingresarNuevoProducto()
 # determinarExistenciaDelProducto(productos)
 # reponerProducto(productos)
 # actualizarStock(productos)
-descuentoProducto(productos)
+#descuentoProducto(productos)
+#ingresarProductoExistente(productos)

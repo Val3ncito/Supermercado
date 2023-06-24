@@ -14,7 +14,7 @@ vencidos.
 •- Simular la venta a un cliente y emitir el ticket de venta.
 ✔ Agregar información adicional al producto para saber si un determinado producto tiene o no
 descuento.
-•- Si el producto vence en una semana hacer un 10% de descuento.
+✔ Si el producto vence en una semana hacer un 10% de descuento.
 • Determinar el producto más vendido dependiendo del tipo de producto.
 """
 
