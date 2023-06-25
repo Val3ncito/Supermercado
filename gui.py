@@ -5,6 +5,15 @@ ventana = tkinter.Tk()
 ventana.title('Inicio')
 ventana.geometry('900x640')
 
+
+productos={"1234":["Lechuga", "0001", "50", "Verdura", "5/12/2023", "10"],"5678":["Tomate", "0002", "75", "Verdura", "7/12/2023]"]}
+
+def listarProductos(diccionario):
+    claves = diccionario.keys()
+    for c in claves:
+        dato = diccionario[c]
+        return(c, dato[0], dato[1], dato[2], dato[3], dato[4], dato[5])
+
 def AgrElim():
     ventanaAgrElim = tkinter.Toplevel()
     ventanaAgrElim.title('Agregar o Eliminar Producto')
@@ -24,32 +33,33 @@ def AgrElim():
     cerrar = tkinter.Button(ventanaAgrElim, text='cerrar', command=ventanaAgrElim.destroy,width=5,height=1).place(x=655,y=360)
 
 def Venta():
-    ventanaAgrElim = tkinter.Toplevel()
-    ventanaAgrElim.title('Venta')
-    ventanaAgrElim.geometry('700x350')
+    ventanaVenta = tkinter.Toplevel()
+    ventanaVenta.title('Venta')
+    ventanaVenta.geometry('700x350')
 
 def Listar():
-    ventanaAgrElim = tkinter.Toplevel()
-    ventanaAgrElim.title('Listar productos')
-    ventanaAgrElim.geometry('700x350')
+    ventanaListar = tkinter.Toplevel()
+    ventanaListar.title('Listar productos')
+    ventanaListar.geometry('700x350')
+    label = tkinter.Label(ventanaListar,text = listarProductos(productos)).place(x=0,y=0)
 
 
 #imagen
 img = tkinter.PhotoImage(file="super.png")
-eti_img = tkinter.Label(ventana, image= img).place(x=310,y=200)
+eti_img = tkinter.Label(ventana, image= img).place(x=270,y=100)
 
 
 #Textos
-titulo = tkinter.Label(ventana, text='BIENVENIDO AL SUPERMERCADO', bg='cyan',font='helvetica 13',width=100,height=9).place(x=0,y=0)
+titulo = tkinter.Label(ventana, text='La calidad que querés, al precio que buscás',font='helvetica 17',width=100,height=9).place(x=-180,y=-50)
 
 
 #Botones
 
-buttonAgrElim = tkinter.Button(ventana, text= 'Agregar producto\n Eliminar Producto', command=AgrElim ,width=20,height=9).place(x=0,y=180)
+buttonAgrElim = tkinter.Button(ventana, text= 'Agregar producto\n Eliminar Producto', command=AgrElim ,width=20,height=9).place(x=200,y=480)
 
-buttonVenta = tkinter.Button(ventana, text= 'Vender Producto',command=Venta,width=20,height=9).place(x=0,y=330)
+buttonVenta = tkinter.Button(ventana, text= 'Vender Producto',command=Venta,width=20,height=9).place(x=360,y=480)
 
-buttonListar = tkinter.Button(ventana, text= 'Listar productos',command=Listar,width=20,height=9).place(x=0,y=480)
+buttonListar = tkinter.Button(ventana, text= 'Listar productos',command=Listar,width=20,height=9).place(x=520,y=480)
 
 buttonCerrar = tkinter.Button(ventana, text='cerrar', command=ventana.destroy,width=5,height=1).place(x=855,y=600)
 
