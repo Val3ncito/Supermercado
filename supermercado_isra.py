@@ -12,7 +12,7 @@
 • Eliminar del supermercado (guardarlos en un otro diccionario) los artículos que estén
 vencidos.
 • Simular la venta a un cliente y emitir el ticket de venta.
-• Agregar información adicional al producto para saber si un determinado producto tiene o no
+✔Agregar información adicional al producto para saber si un determinado producto tiene o no
 descuento.
 ✔Si el producto vence en una semana hacer un 10% de descuento.
 • Determinar el producto más vendido dependiendo del tipo de producto.
@@ -42,6 +42,7 @@ def ingresarNuevoProducto():
     tipo_de_producto = "verdura"
     fecha_de_vencimiento = input("Ingrese fecha de vencimiento dd/mm/aa: ")
     fecha = datetime.strptime(fecha_de_vencimiento, "%d/%m/%Y")
+    tiene_descuento = False
 
 
     valor.append(descripcion)
@@ -49,6 +50,7 @@ def ingresarNuevoProducto():
     valor.append(precio_unitario)
     valor.append(tipo_de_producto)
     valor.append(fecha)
+    valor.append(tiene_descuento)
 
 
     productos[codigo] = valor
@@ -124,16 +126,28 @@ def descuentoProducto(diccionario):
             precio = diccionario[i][2]
             descuento = precio * 0.1
             diccionario[i][2] = precio - descuento
+            diccionario[i][5] = True
 
-    
+def tieneDescuento(diccionario):
+    codigo = int(input("Ingrese el código del producto del cual desea saber si tiene descuento: "))
+    claves = diccionario.keys()
 
+    for i in claves:
+        if i == codigo:
+            aux = ""
+            if diccionario[i][5]:
+                aux = " El producto tiene descuento"
+                print(aux)
+            else:
+                aux = "El producto no tiene descuento"
+                print(aux)
 
 
 ingresarNuevoProducto()
-# ingresarProductoExistente(productos,id_producto)
+#ingresarProductoExistente(productos)
 # eliminarProducto(productos)
 # determinarExistenciaDelProducto(productos)
 # reponerProducto(productos)
 # actualizarStock(productos)
 #descuentoProducto(productos)
-#ingresarProductoExistente(productos)
+#tieneDescuento(productos)
