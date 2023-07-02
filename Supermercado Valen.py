@@ -7,8 +7,8 @@
 6✔ Determinar la existencia de un producto para poder vender la cantidad solicitada.
 7✔ Reponer un producto cuando el stock está por debajo de un mínimo requerido.
 8✔ Pedir los datos de un cliente para hacer envío a domicilio.
-9X Determinar cuál es el artículo más vendido.
-10X Eliminar del supermercado (guardarlos en un otro diccionario) los artículos que estén vencidos.
+9✔ Determinar cuál es el artículo más vendido.
+10✔ Eliminar del supermercado (guardarlos en un otro diccionario) los artículos que estén vencidos.
 11X Simular la venta a un cliente y emitir el ticket de venta.
 12✔ Agregar información adicional al producto para saber si un determinado producto tiene o no descuento.
 13✔ Si el producto vence en una semana hacer un 10% de descuento.
@@ -56,11 +56,15 @@ def EliminarProducto(diccionario):
     print("El producto ha sido eliminado satisfactoriamente")
 
 #3
-def ListarProductos():
-    claves=productos.keys()
+def ListarProductos(diccionario):
+    claves = diccionario.keys()
     for c in claves:
-        dato=productos[c]
-        print(c,dato[0],dato[1],dato[2],dato[3],dato[4])
+        dato = productos[c]
+        if diccionario[c][5]:
+            diccionario[c][5] = "Tiene descuento"
+        else:
+            diccionario[c][5] = "No tiene descuento"
+        print(c, dato[0], dato[1], dato[2], dato[3], dato[4], dato[5])
 
 #4
 def ActualizarStock(diccionario, Ventas):
@@ -157,7 +161,23 @@ def DeterminarMasVendido(Ventas, Historial):
             continue
     global UltimasVentas
     UltimasVentas=[]
-    print("El articulo más vendido es: ",MayorF)    
+    print("El articulo más vendido es: ",MayorF)
+
+#10
+def productosVencidos(diccionario):
+    fecha_actual = datetime.now()
+    lista_claves_a_eliminar = []
+    copia_diccionario = diccionario.copy()
+
+    for i in copia_diccionario:
+        fecha_vencimiento = copia_diccionario[i][4]
+
+        if fecha_vencimiento < fecha_actual:
+            vencidos[i] = copia_diccionario[i]
+            lista_claves_a_eliminar.append(i)
+
+    for i in lista_claves_a_eliminar:
+        del diccionario[i]    
 
 #12
 def TieneDescuento(diccionario):
@@ -180,7 +200,7 @@ def DescuentoProducto(diccionario):
         fecha_vencimiento = diccionario[i][4]
         prueba = fecha_vencimiento - fecha_actual
         
-        if  int(prueba.days)<= 7 and (prueba.days)>0:
+        if int(prueba.days)<= 7 and (prueba.days)>0:
             precio = diccionario[i][2]
             descuento = precio * 0.1
             diccionario[i][2] = precio - descuento
@@ -188,7 +208,7 @@ def DescuentoProducto(diccionario):
 
 
 
-#10
+
 #11
 #14
 
