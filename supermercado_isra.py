@@ -9,7 +9,7 @@
 ✔Reponer un producto cuando el stock está por debajo de un mínimo requerido.
 ✔Pedir los datos de un cliente para hacer envío a domicilio.
 • Determinar cuál es el artículo más vendido.
-• Eliminar del supermercado (guardarlos en un otro diccionario) los artículos que estén
+✔Eliminar del supermercado (guardarlos en un otro diccionario) los artículos que estén
 vencidos.
 • Simular la venta a un cliente y emitir el ticket de venta.
 ✔Agregar información adicional al producto para saber si un determinado producto tiene o no
@@ -23,13 +23,22 @@ from datetime import datetime, date
 from time import strftime
 
 productos = {}
+Usuarios = {}
+vencidos = {}
 
 
-def listarProductos():
-    claves = productos.keys()
+def listarProductos(diccionario):
+    claves = diccionario.keys()
+
     for c in claves:
         dato = productos[c]
-        print(c, dato[0], dato[1], dato[2], dato[3], dato[4])
+
+        if diccionario[c][5]:
+            diccionario[c][5] = "Tiene descuento"
+        else:
+            diccionario[c][5] = "No tiene descuento"
+
+        print(c, dato[0], dato[1], dato[2], dato[3], dato[4], dato[5])
 
 
 def ingresarNuevoProducto():
@@ -44,14 +53,12 @@ def ingresarNuevoProducto():
     fecha = datetime.strptime(fecha_de_vencimiento, "%d/%m/%Y")
     tiene_descuento = False
 
-
     valor.append(descripcion)
     valor.append(stock)
     valor.append(precio_unitario)
     valor.append(tipo_de_producto)
     valor.append(fecha)
     valor.append(tiene_descuento)
-
 
     productos[codigo] = valor
 
@@ -62,7 +69,7 @@ def ingresarNuevoProducto():
     if nuevo_producto == 1:
         ingresarNuevoProducto()
     else:
-        listarProductos()
+        listarProductos(productos)
 
 
 def eliminarProducto(diccionario):
@@ -78,22 +85,10 @@ def determinarExistenciaDelProducto(diccionario):
 
     for i in claves:
         if i == codigo:
-            listarProductos()
+            listarProductos(productos)
         else:
             print("El producto no existe")
 
-
-def ingresarProductoExistente(diccionario):
-    codigo = int(input("Ingrese el código del producto: "))
-    cantidad = int(input("Ingrese la cantidad que desea añadir: "))
-    claves = diccionario.keys()
-
-    for i in claves:
-        if i == codigo:
-            stock_anterior = diccionario[i][1]
-            aux = stock_anterior + cantidad
-            diccionario[i][1] = aux
-    
 
 def reponerProducto(diccionario):
     minimo = 10
@@ -121,33 +116,86 @@ def descuentoProducto(diccionario):
     for i in diccionario:
         fecha_vencimiento = diccionario[i][4]
         prueba = fecha_vencimiento - fecha_actual
-        
-        if  int(prueba.days)<= 7 and (prueba.days)>0:
+
+        if int(prueba.days) <= 7 and prueba.days > 0:
             precio = diccionario[i][2]
             descuento = precio * 0.1
             diccionario[i][2] = precio - descuento
             diccionario[i][5] = True
 
+
 def tieneDescuento(diccionario):
     codigo = int(input("Ingrese el código del producto del cual desea saber si tiene descuento: "))
     claves = diccionario.keys()
+    fecha = datetime.now()
 
     for i in claves:
         if i == codigo:
             aux = ""
+
             if diccionario[i][5]:
-                aux = " El producto tiene descuento"
+                aux = "Tiene descuento"
                 print(aux)
             else:
-                aux = "El producto no tiene descuento"
+                aux = "No tiene descuento"
                 print(aux)
 
 
+def ingresarProductoExistente(diccionario):
+    codigo = int(input("Ingrese el código del producto: "))
+    cantidad = int(input("Ingrese la cantidad que desea añadir: "))
+    claves = diccionario.keys()
+
+    for i in claves:
+        if i == codigo:
+            stock_anterior = diccionario[i][1]
+            aux = stock_anterior + cantidad
+            diccionario[i][1] = aux
+
+
+def envioDomicilio(Usuarios):
+    DNI = input("Ingresar DNI: ")
+    valor = []
+    if DNI in Usuarios:
+        fecha = input("Ingrese Cuando desea recibir su pedido: ")
+        print("")
+        print("El envio será el: ", fecha)
+        print("Domicilio: ", Usuarios[DNI][1])
+        print("A pedido de: ", Usuarios[DNI][0])
+    else:
+        Nombre = input("Ingrese su nombre completo: ")
+        Direccion = input("Ingrese su direccion: ")
+        fecha = input("Ingrese cuando desea recibir su pedido: ")
+        valor.append(Nombre)
+        valor.append(Direccion)
+        Usuarios[DNI] = valor
+        print("")
+        print("El envio será el:", fecha)
+        print("Domicilio: ", Usuarios[DNI][1])
+        print("A pedido de: ", Usuarios[DNI][0])
+
+
+def productosVencidos(diccionario):
+    fecha_actual = datetime.now()
+    lista_claves_a_eliminar = []
+    copia_diccionario = diccionario.copy()
+
+    for i in copia_diccionario:
+        fecha_vencimiento = copia_diccionario[i][4]
+
+        if fecha_vencimiento < fecha_actual:
+            vencidos[i] = copia_diccionario[i]
+            lista_claves_a_eliminar.append(i)
+
+    for i in lista_claves_a_eliminar:
+        del diccionario[i]
+
 ingresarNuevoProducto()
+#tieneDescuento(productos)
 #ingresarProductoExistente(productos)
-# eliminarProducto(productos)
-# determinarExistenciaDelProducto(productos)
-# reponerProducto(productos)
-# actualizarStock(productos)
+#eliminarProducto(productos)
+#determinarExistenciaDelProducto(productos)
+#reponerProducto(productos)
+#actualizarStock(productos)
 #descuentoProducto(productos)
 #tieneDescuento(productos)
