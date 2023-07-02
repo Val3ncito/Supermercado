@@ -4,11 +4,11 @@
 ✔Eliminar un producto dado su código.
 ✔Listar todos los productos de una forma prolija.
 ✔Actualizar el stock cuando se vende un producto.
-• Actualizar el precio unitario de un producto determinado en un cierto procentaje.
+✔ Actualizar el precio unitario de un producto determinado en un cierto procentaje.
 ✔Determinar la existencia de un producto para poder vender la cantidad solicitada.
 ✔Reponer un producto cuando el stock está por debajo de un mínimo requerido.
 ✔Pedir los datos de un cliente para hacer envío a domicilio.
-• Determinar cuál es el artículo más vendido.
+✔ Determinar cuál es el artículo más vendido.
 ✔Eliminar del supermercado (guardarlos en un otro diccionario) los artículos que estén
 vencidos.
 • Simular la venta a un cliente y emitir el ticket de venta.
@@ -25,6 +25,8 @@ from time import strftime
 productos = {}
 Usuarios = {}
 vencidos = {}
+UltimasVentas = []
+HistorialDeVentas = {}
 
 
 def listarProductos(diccionario):
@@ -100,15 +102,17 @@ def reponerProducto(diccionario):
             print("Alerta!! Reponer stock")
 
 
-def actualizarStock(diccionario):
+def actualizarStock(diccionario, Ventas):
     descripcion = input("Ingrese descripción del producto que desea comprar: ")
     stock = int(input("Ingrese la cantidad deseada: "))
 
     for i in diccionario:
         if diccionario[i][0] == descripcion:
             stock_real = diccionario[i][1] - stock
+            productos[i][1]=stock_real
             print("El stock real del producto es " + str(stock_real))
-
+    Vendido=(descripcion, int(stock))
+    Ventas.append(Vendido)
 
 def descuentoProducto(diccionario):
     fecha_actual = datetime.now()
@@ -189,6 +193,44 @@ def productosVencidos(diccionario):
 
     for i in lista_claves_a_eliminar:
         del diccionario[i]
+
+def ActualizarPrecio(productos):
+    Clave=int(input("Ingresar Código de Producto: "))
+    Porcentaje=int(input("Ingresar Porcentaje: "))
+    Precio=int((productos.get(Clave)[2]))
+    PrecioF=(Precio+(Precio*Porcentaje/100))
+    productos.get(Clave)[2]=PrecioF
+    print("El precio paso de",str(Precio)+"$","a",str(PrecioF)+"$")
+
+def DeterminarMasVendido(Ventas, Historial):
+    for i in Ventas:
+        if i[0] in Historial:
+            Suma=i[1]+Historial.get(i[0])
+            Historial.pop(i[0])
+            Historial[i[0]]=Suma
+        else:
+            Historial[i[0]]=i[1]
+    Mayor=0
+    MayorF=""
+    for i in Historial.items():
+        if i[1]>Mayor:
+            Mayor=i[1]
+            MayorF=i
+    global UltimasVentas
+    UltimasVentas=[]
+    print("El articulo más vendido es: ",MayorF)
+
+
+""" Ejemplo
+ingresarNuevoProducto()
+actualizarStock(productos, UltimasVentas)
+DeterminarMasVendido(UltimasVentas, HistorialDeVentas)
+listarProductos(productos)
+ingresarNuevoProducto()
+actualizarStock(productos, UltimasVentas)
+DeterminarMasVendido(UltimasVentas, HistorialDeVentas)
+listarProductos(productos)
+"""
 
 ingresarNuevoProducto()
 #tieneDescuento(productos)
