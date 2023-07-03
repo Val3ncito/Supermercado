@@ -210,7 +210,7 @@ def DeterminarMasVendido(Ventas, Historial):
             Historial[i[0]]=Suma
         else:
             Historial[i[0]]=i[1]
-    Mayor=0
+    Mayor=-9999
     MayorF=""
     for i in Historial.items():
         if i[1]>Mayor:
