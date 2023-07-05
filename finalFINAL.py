@@ -174,8 +174,14 @@ def ingresarNuevoProducto():
     descripcion = e_descripcion.get()
     stock = int(e_stock.get())
     precio_unitario = e_precio_unitario.get()
-    fecha_vencimiento = e_fecha_de_vencimiento.get()
 
+
+    while True:
+        try:
+            fecha_vencimiento = e_fecha_de_vencimiento.get()
+            break
+        except ValueError:
+            print("No tiene el formato de fecha adecuado. Intente nuevamente")
 
     valor = []
     valor.append(descripcion)
@@ -188,8 +194,7 @@ def ingresarNuevoProducto():
     productos[tipo][codigo] = valor
 
     descuentoProducto(productos)
-    tk.messagebox.showwarning(title='!!!', message="El producto fue añadido")
-    print(productos)
+    tk.messagebox.showwarning(title='!!!', message="El producto fue añadido")
 def abrir_agregar_eliminar():
     ventana_agregar_eliminar = tk.Toplevel()
     ventana_agregar_eliminar.geometry('300x300')
@@ -233,7 +238,7 @@ def abrir_agregar_eliminar():
     e_fecha_de_vencimiento = tk.Entry(ventana_agregar_eliminar)
     e_fecha_de_vencimiento.grid(row=11,column=0)
 
-    boton_guardar = tk.Button(ventana_agregar_eliminar, text="Guardar", command=ingresarNuevoProducto)
+    boton_guardar = tk.Button(ventana_agregar_eliminar, text="Guardar", command=lambda :  ingresarNuevoProducto())
     boton_guardar.grid(row=12,column=0)
 
     #Eliminar
@@ -422,28 +427,25 @@ def listarVentas(ventas):
 # inicio
 ventana_inicio = tk.Toplevel()
 ventana_inicio.title("Inicio")
-ventana_inicio.geometry("900x640")
+ventana_inicio.geometry("1000x700")
 
 img = tk.PhotoImage(file="super.png")
 eti_img = tk.Label(ventana_inicio, image=img)
-eti_img.place(x=270, y=100)
+eti_img.place(x=310, y=120)
 
 titulo = tk.Label(ventana_inicio, text="La calidad que querés, al precio que buscás", font="helvetica 17",width=100, height=9)
-titulo.place(x=-180, y=-50)
+titulo.place(x=-110, y=-50)
 
-button_agr_elim = tk.Button(ventana_inicio, text="Agregar producto / Eliminar Producto",command=abrir_agregar_eliminar, width=20, height=9)
-button_agr_elim.place(x=200, y=480)
+button_agr_elim = tk.Button(ventana_inicio, text="Agregar producto\nEliminar Producto",command=abrir_agregar_eliminar, width=20, height=9)
+button_agr_elim.place(x=200, y=550)
 
 button_venta = tk.Button(ventana_inicio, text="Vender Producto", command=abrir_venta, width=20, height=9)
-button_venta.place(x=360, y=480)
+button_venta.place(x=360, y=550)
 
 button_listar = tk.Button(ventana_inicio, text="Listar productos", command=lambda: listarProductos(productos,vencidos),width=20, height=9)
-button_listar.place(x=520, y=480)
+button_listar.place(x=520, y=550)
 
 button_listar_ventas = tk.Button(ventana_inicio, text='Listar Ventas', command=lambda: listarVentas(ventas),width=20,height=9)
-button_listar_ventas.place(x=690, y=480)
-
-button_cerrar = tk.Button(ventana_inicio, text="Cerrar", command=ventana_inicio.destroy, width=5, height=1)
-button_cerrar.place(x=855, y=600)
+button_listar_ventas.place(x=680, y=550)
 
 ventana_inicio.mainloop()
