@@ -30,27 +30,6 @@ ventas = {
     'carnes': {
     }
 }
-
-
-
-# def DeterminarMasVendido(Ventas, Historial):
-#     for i in Ventas:
-#         if i[0] in Historial:
-#             Suma=i[1]+Historial.get(i[0])
-#             Historial.pop(i[0])
-#             Historial[i[0]]=Suma
-#         else:
-#             Historial[i[0]]=i[1]
-#     Mayor=-9999
-#     MayorF=""
-#     for i in Historial.items():
-#         if i[1]>Mayor:
-#             Mayor=i[1]
-#             MayorF=i
-#     global UltimasVentas
-#     UltimasVentas=[]
-#     print("El articulo más vendido es: ",MayorF)
-
 def Venta(aceptar_var,nombre_entry,apellido_entry,age_spinbox,dni_entry,dire_entry, codigo_Entry, cantidad_spinbox,tipo_Entry):
     accepted = aceptar_var.get()
 
@@ -136,7 +115,7 @@ def productosVencidos(diccionario):
         for clave_producto in claves_productos:
             producto = productos_categoria[clave_producto]
             fecha_vencimiento = producto[4]
-            if fecha_vencimiento > bool(fecha_actual):
+            if fecha_vencimiento < bool(fecha_actual):
                 vencidos.setdefault(categoria, {})[clave_producto] = copy.deepcopy(producto)
                 lista_claves_a_eliminar.append((categoria, clave_producto))
 
@@ -375,6 +354,70 @@ def listarVentas(ventas):
             texto_resultado.insert(tk.END, texto)
 
     texto_resultado.insert(tk.END, "================================================\n")
+
+    # mostrar productos más vendidos de cada sector
+    productos_vendidos = {
+        'frutas': {},
+        'verduras': {},
+        'carnes': {}
+    }
+
+    for categoria in ventas.keys():
+        productos_categoria = ventas[categoria]
+        for codigo, producto in productos_categoria.items():
+            cantidad = producto[1]
+            if codigo in productos_vendidos[categoria]:
+                productos_vendidos[categoria][codigo] += cantidad
+            else:
+                productos_vendidos[categoria][codigo] = cantidad
+
+    for categoria in productos_vendidos.keys():
+        productos_categoria = productos_vendidos[categoria]
+        productos_ordenados = sorted(productos_categoria.items(), key=lambda x: x[1], reverse=True)
+        productos_vendidos[categoria] = productos_ordenados
+
+    texto_resultado.insert(tk.END, "Productos más vendidos:\n")
+    for categoria in productos_vendidos.keys():
+        texto_resultado.insert(tk.END, f"\nCategoría: {categoria}\n")
+        productos_categoria = productos_vendidos[categoria]
+        for codigo, cantidad_vendida in productos_categoria:
+            dato = ventas[categoria][codigo]
+            texto = f"\nCódigo: {codigo}\nDescripción: {dato[0]}\nCantidad: {cantidad_vendida}\nCosto: {int(dato[2]) * cantidad_vendida}\nTipo: {dato[3]}\nFecha de vencimiento: {dato[4]}"
+            texto += "\n" + "=" * 20
+            texto_resultado.insert(tk.END, texto)
+
+    # el producto más vendido en general
+    productos_total_vendidos = {}
+
+    for categoria in productos_vendidos.keys():
+        productos_categoria = productos_vendidos[categoria]
+        for codigo, cantidad_vendida in productos_categoria:
+            if codigo in productos_total_vendidos:
+                productos_total_vendidos[codigo] += cantidad_vendida
+            else:
+                productos_total_vendidos[codigo] = cantidad_vendida
+
+    producto_mas_vendido = max(productos_total_vendidos, key=productos_total_vendidos.get)
+    cantidad_mas_vendida = productos_total_vendidos[producto_mas_vendido]
+    categoria_producto_mas_vendido = ''
+
+    for categoria, productos_categoria in ventas.items():
+        if producto_mas_vendido in productos_categoria:
+            categoria_producto_mas_vendido = categoria
+            break
+
+    texto_resultado.insert(tk.END, f"\nProducto más vendido en general:\n")
+    texto_resultado.insert(tk.END, f"\nCategoría: {categoria_producto_mas_vendido}\n")
+    texto_resultado.insert(tk.END, f"Código: {producto_mas_vendido}\n")
+    dato = ventas[categoria_producto_mas_vendido][producto_mas_vendido]
+    texto_resultado.insert(tk.END, f"Descripción: {dato[0]}\n")
+    texto_resultado.insert(tk.END, f"Cantidad vendida: {cantidad_mas_vendida}\n")
+    texto_resultado.insert(tk.END, f"Costo total: {int(dato[2]) * cantidad_mas_vendida}\n")
+    texto_resultado.insert(tk.END, f"Tipo: {dato[3]}\n")
+    texto_resultado.insert(tk.END, f"Fecha de vencimiento: {dato[4]}\n")
+    texto_resultado.insert(tk.END, "=" * 20)
+
+
 # inicio
 ventana_inicio = tk.Toplevel()
 ventana_inicio.title("Inicio")
