@@ -44,12 +44,17 @@ def Venta(aceptar_var,nombre_entry,apellido_entry,age_spinbox,dni_entry,dire_ent
             # compra
             codigo = codigo_Entry.get()
             cantidad = cantidad_spinbox.get()
+
             aviso = VerificarCantidad(codigo_Entry, cantidad_spinbox)
 
             if (aviso == True):
                 ventas[codigo] = productos[codigo]
                 ventas[codigo][1] = cantidad
-                productos[codigo][1] = int(productos[codigo][1]) - int(ventas[codigo][1])
+                numero = int(productos[codigo][1]) - int(cantidad)
+                
+                if (productos[codigo][1] == 0):
+                    del productos[codigo]
+
                 tk.messagebox.showinfo(title='Ticket',
                                        message='------------------------------------------\nNombre: ' + nombre + '/' + 'Apellido: ' + apellido + "\nEdad: " + edad + '/' + "Dirrecion: " + dirrecion + "\ncodigo del producto comprado: " + codigo + "# cantidad: " + cantidad + "\nSu producto sera enviado en dias habiles a la dirrecion " + dirrecion + '\nMuchas gracias por comprar' + '\n------------------------------------------')
 
@@ -75,8 +80,8 @@ def VerificarCantidad(codigo, cant):
     cantidad = cant.get()
 
     if clave in productos:
-        canti = int(productos[clave][1])
-        if canti >= int(cantidad):
+        mon = int(productos[clave][1])
+        if mon >= int(cantidad):
             tk.messagebox.showwarning(title='Aviso',message="Hay la cantidad de producto necesitado")
             return True
         else:
