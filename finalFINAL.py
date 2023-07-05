@@ -107,20 +107,20 @@ def descuentoProducto(diccionario):
 def productosVencidos(diccionario):
     fecha_actual = datetime.now()
     lista_claves_a_eliminar = []
-    copia_diccionario = copy.deepcopy(diccionario)
+    copia_diccionario = diccionario.copy()
 
-    for categoria in copia_diccionario:
-        productos_categoria = copia_diccionario[categoria]
+    for categoria, productos_categoria in copia_diccionario.items():
         claves_productos = productos_categoria.keys()
         for clave_producto in claves_productos:
             producto = productos_categoria[clave_producto]
-            fecha_vencimiento = producto[4]
-            if fecha_vencimiento < bool(fecha_actual):
-                vencidos.setdefault(categoria, {})[clave_producto] = copy.deepcopy(producto)
+            fecha_vencimiento = producto[3]
+            if fecha_vencimiento < fecha_actual:
+                vencidos.setdefault(categoria, {})[clave_producto] = producto
                 lista_claves_a_eliminar.append((categoria, clave_producto))
 
     for categoria, clave_producto in lista_claves_a_eliminar:
         del diccionario[categoria][clave_producto]
+
 def eliminarProducto(diccionario):
     tipo = caja_tipo_eliminar.get()
     codigo = caja_codigo_eliminar.get()
@@ -189,6 +189,7 @@ def ingresarNuevoProducto():
 
     descuentoProducto(productos)
     tk.messagebox.showwarning(title='!!!', message="El producto fue añadido")
+    print(productos)
 def abrir_agregar_eliminar():
     ventana_agregar_eliminar = tk.Toplevel()
     ventana_agregar_eliminar.geometry('300x300')
