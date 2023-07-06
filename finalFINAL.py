@@ -1,11 +1,6 @@
 import tkinter as tk
-from tkinter import ttk
 from tkinter import messagebox
-import copy
 from datetime import datetime
-
-
-
 productos = {
     'frutas': {},
     'verduras': {},
@@ -30,44 +25,48 @@ ventas = {
     'carnes': {
     }
 }
-def Venta(aceptar_var,nombre_entry,apellido_entry,age_spinbox,dni_entry,dire_entry, codigo_Entry, cantidad_spinbox,tipo_Entry):
-    accepted = aceptar_var.get()
+productos_vendidos = {
+    'frutas': {},
+    'verduras': {},
+    'carnes': {}
+}
 
+
+def venta(aceptar_var, nombre_entry, apellido_entry, age_spinbox, dire_entry, codigo_entry, cantidad_spinbox, tipo_entry):
+    accepted = aceptar_var.get()
     if accepted == "aceptados":
         # Usuario
         nombre = nombre_entry.get()
         apellido = apellido_entry.get()
         edad = age_spinbox.get()
         dirrecion = dire_entry.get()
-
-
         # compra
-        tipo = tipo_Entry.get()
-        codigo = codigo_Entry.get()
+        tipo = tipo_entry.get()
+        codigo = codigo_entry.get()
         cantidad = cantidad_spinbox.get()
 
         relleno = productos[tipo][codigo][1]
 
         if nombre and apellido and edad and dirrecion and tipo and codigo and cantidad:
-            aviso = VerificarCantidad(codigo_Entry, cantidad_spinbox,tipo_Entry)
+            aviso = verificarcantidad(codigo_entry, cantidad_spinbox, tipo_entry)
 
-            if (aviso == True):
+            if aviso:
                 ventas[tipo][codigo] = productos[tipo][codigo].copy()
                 ventas[tipo][codigo][1] = cantidad
                 productos[tipo][codigo][1] = int(productos[tipo][codigo][1]) - int(cantidad)
 
-                if (productos[tipo][codigo][1] == 0):
+                if productos[tipo][codigo][1] == 0:
                     del productos[tipo][codigo]
-                elif(productos[tipo][codigo][1] <= 10):
-                    rellenar = tk.messagebox.askyesno(title='Aviso',message='Se esta quedando sin stock del producto\n\nDesea rellenar el stock?')
+                elif productos[tipo][codigo][1] <= 10:
+                    rellenar = tk.messagebox.askyesno(title='Aviso', message='Se esta quedando sin stock del producto\n\nDesea rellenar el stock?')
 
                     if rellenar:
                         productos[tipo][codigo][1] = relleno
 
-                #impresion ticket en un mensaje
+                # impresion ticket en un mensaje
                 tk.messagebox.showinfo(title='Ticket', message='------------------------------------------\nNombre: ' + nombre + '/' + 'Apellido: ' + apellido + "\nEdad: " + edad + '/' + "Dirrecion: " + dirrecion + "\ncodigo del producto comprado: " + codigo + "# cantidad: " + cantidad + "\nSu producto sera enviado en dias habiles a la dirrecion " + dirrecion + '\nMuchas gracias por comprar' + '\n------------------------------------------')
 
-                #impresion ticket en consola
+                # impresion ticket en consola
                 print("------------------------------------------")
                 print("Nombre: ", nombre, '/', "Apellido: ", apellido)
                 print("Edad: ", edad, '/', "Dirrecion: ", dirrecion)
@@ -77,13 +76,13 @@ def Venta(aceptar_var,nombre_entry,apellido_entry,age_spinbox,dni_entry,dire_ent
                 print("------------------------------------------")
             else:
                 tk.messagebox.showwarning(title='Error', message='Hubo algun problema al realizar la compra, Porfavor vuelva a intentar.')
-
-
         else:
             tk.messagebox.showwarning(title="Error", message="Los datos solicitados son requeridos.")
     else:
         tk.messagebox.showwarning(title="Error", message="No has aceptado los terminos y condiciones")
-def VerificarCantidad(codigo, cant, tip):
+
+
+def verificarcantidad(codigo, cant, tip):
     tipo = tip.get()
     clave = codigo.get()
     cantidad = cant.get()
@@ -92,15 +91,17 @@ def VerificarCantidad(codigo, cant, tip):
         if clave in productos[tipo]:
             mon = int(productos[tipo][clave][1])
             if mon >= int(cantidad):
-                tk.messagebox.showwarning(title='Aviso',message="Hay la cantidad de producto necesitado")
+                tk.messagebox.showwarning(title='Aviso', message="Hay la cantidad de producto necesitado")
                 return True
             else:
-                tk.messagebox.showwarning(title='Aviso',message="No hay la cantidad de producto necesitado")
+                tk.messagebox.showwarning(title='Aviso', message="No hay la cantidad de producto necesitado")
                 return False
         else:
-            tk.messagebox.showwarning(title='Error',message="No se encontró la clave {clave} en el diccionario de productos")
+            tk.messagebox.showwarning(title='Error', message="No se encontró la clave {clave} en el diccionario de productos")
             return False
-def descuentoProducto(diccionario):
+
+
+def descuentoproducto(diccionario):
     fecha_actual = datetime.now().date()
 
     for categoria in diccionario.values():
@@ -114,6 +115,8 @@ def descuentoProducto(diccionario):
                 descuento = precio * 0.1
                 producto[2] = str(precio - descuento)
                 producto[4] = True
+
+
 def productosVencidos(diccionario):
     fecha_actual = datetime.now()
     lista_claves_a_eliminar = []
@@ -130,7 +133,9 @@ def productosVencidos(diccionario):
 
     for categoria, clave_producto in lista_claves_a_eliminar:
         del diccionario[categoria][clave_producto]
-def eliminarProducto(diccionario):
+
+
+def eliminar_producto(diccionario):
     tipo = caja_tipo_eliminar.get()
     codigo = caja_codigo_eliminar.get()
     if tipo and codigo:
@@ -139,13 +144,17 @@ def eliminarProducto(diccionario):
                 del diccionario[tipo][codigo]
                 tk.messagebox.showwarning(title='!!!', message="El producto fue eliminado correctamente")
             else:
-                tk.messagebox.showwarning(title='Error',message="El producto con el código ingresado no existe")
+                tk.messagebox.showwarning(title='Error', message="El producto con el código ingresado no existe")
         else:
             tk.messagebox.showwarning(title='Error', message="El tipo de producto ingresado no existe")
     else:
         tk.messagebox.showwarning(title='Error', message='Falto introducir alguno de los datos')
+
+
 def listarProductos(productos, vencidos):
+
     productosVencidos(productos)
+
     ventana_listar = tk.Toplevel()
     ventana_listar.title("Listar productos")
 
@@ -165,7 +174,8 @@ def listarProductos(productos, vencidos):
             texto += "\n" + "-" * 20
             texto_resultado.insert(tk.END, texto)
 
-    texto_resultado.insert(tk.END, "#" * 50,"\n\nProductos vencidos:\n")
+    texto_resultado.insert(tk.END, "#" * 50)
+    texto_resultado.insert(tk.END, "\nProductos vencidos:\n")
 
     claves_vencidos = vencidos.keys()
     for categoria_vencidos in claves_vencidos:
@@ -179,12 +189,13 @@ def listarProductos(productos, vencidos):
             texto_resultado.insert(tk.END, texto_vencido)
 
     texto_resultado.configure(state="disabled")
+
+
 def ingresarNuevoProducto():
     tip = e_tipo.get()
     tipo = tip.lower()
     codigo = e_codigo.get()
     descripcion = e_descripcion.get()
-    stock = 0
     precio_unitario = e_precio_unitario.get()
 
     if tipo and codigo and descripcion and precio_unitario:
@@ -208,15 +219,20 @@ def ingresarNuevoProducto():
 
             productos[tipo][codigo] = valor
 
-            descuentoProducto(productos)
+            descuentoproducto(productos)
             tk.messagebox.showwarning(title='!!!', message="El producto fue añadido")
         else:
             tipos_nuevos = tk.messagebox.askyesno(title='Atencion', message='Usted esta intentando ingresar un tipo de producto que no esta en nuestra base de datos\nusted quiere agregar este nuevo tipo de producto?')
 
             if tipos_nuevos:
                 productos.update({tipo: {}})
+                vencidos.update({tipo: {}})
+                ventas.update({tipo: {}})
+                productos_vendidos.update({tipo: {}})
     else:
         tk.messagebox.showwarning(title='Error', message='Falta alguno de los datos requeridos')
+
+
 def abrir_agregar():
     ventana_agregar = tk.Toplevel()
     ventana_agregar.geometry('300x500')
@@ -228,49 +244,51 @@ def abrir_agregar():
     agregar_frame = tk.LabelFrame(frame, text="Agregar Producto")
     agregar_frame.grid(row=0, column=0, padx=20, pady=10)
 
-    #Agregar
+    # Agregar
 
-    label_tipo = tk.Label(agregar_frame,text='Tipo de producto:')
-    label_tipo.grid(row=0,column=0)
+    label_tipo = tk.Label(agregar_frame, text='Tipo de producto:')
+    label_tipo.grid(row=0, column=0)
     global e_tipo
     e_tipo = tk.Entry(agregar_frame)
-    e_tipo.grid(row=1,column=0)
+    e_tipo.grid(row=1, column=0)
 
     label_codigo = tk.Label(agregar_frame, text="Código:")
-    label_codigo.grid(row=2,column=0)
+    label_codigo.grid(row=2, column=0)
     global e_codigo
     e_codigo = tk.Entry(agregar_frame)
-    e_codigo.grid(row=3,column=0)
+    e_codigo.grid(row=3, column=0)
 
     label_descripcion = tk.Label(agregar_frame, text="Descripción:")
-    label_descripcion.grid(row=4,column=0)
+    label_descripcion.grid(row=4, column=0)
     global e_descripcion
     e_descripcion = tk.Entry(agregar_frame)
-    e_descripcion.grid(row=5,column=0)
+    e_descripcion.grid(row=5, column=0)
 
     label_stock = tk.Label(agregar_frame, text="Stock:")
-    label_stock.grid(row=6,column=0)
+    label_stock.grid(row=6, column=0)
     global e_stock
     e_stock = tk.Entry(agregar_frame)
-    e_stock.grid(row=7,column=0)
+    e_stock.grid(row=7, column=0)
 
     label_precio = tk.Label(agregar_frame, text="Precio Unitario:")
-    label_precio.grid(row=8,column=0)
+    label_precio.grid(row=8, column=0)
     global e_precio_unitario
     e_precio_unitario = tk.Entry(agregar_frame)
-    e_precio_unitario.grid(row=9,column=0)
+    e_precio_unitario.grid(row=9, column=0)
 
     label_fecha = tk.Label(agregar_frame, text="Fecha de Vencimiento:")
-    label_fecha.grid(row=10,column=0)
+    label_fecha.grid(row=10, column=0)
     global e_fecha_de_vencimiento
     e_fecha_de_vencimiento = tk.Entry(agregar_frame)
-    e_fecha_de_vencimiento.grid(row=11,column=0)
+    e_fecha_de_vencimiento.grid(row=11, column=0)
 
-    boton_guardar = tk.Button(agregar_frame, text="Guardar", command=lambda :  ingresarNuevoProducto())
-    boton_guardar.grid(row=12,column=0)
+    boton_guardar = tk.Button(agregar_frame, text="Guardar", command=lambda: ingresarNuevoProducto())
+    boton_guardar.grid(row=12, column=0)
 
     for widget in agregar_frame.winfo_children():
         widget.grid_configure(padx=10, pady=5)
+
+
 def abrir_eliminar():
     ventana_eliminar = tk.Toplevel()
     ventana_eliminar.geometry('300x200')
@@ -278,30 +296,30 @@ def abrir_eliminar():
 
     frame = tk.Frame(ventana_eliminar)
     frame.pack()
-
-
-    #Eliminar
+    # Eliminar
 
     eliminar_frame = tk.LabelFrame(frame, text="Eliminar producto")
     eliminar_frame.grid(row=0, column=1, sticky="news", padx=20, pady=10)
 
     label_tipo_eliminar = tk.Label(eliminar_frame, text="Tipo de producto a eliminar")
-    label_tipo_eliminar.grid(row=0,column=0)
+    label_tipo_eliminar.grid(row=0, column=0)
     global caja_tipo_eliminar
     caja_tipo_eliminar = tk.Entry(eliminar_frame)
-    caja_tipo_eliminar.grid(row=1,column=0)
+    caja_tipo_eliminar.grid(row=1, column=0)
 
     label_codigo_eliminar = tk.Label(eliminar_frame, text="Código del producto a eliminar:")
-    label_codigo_eliminar.grid(row=2,column=0)
+    label_codigo_eliminar.grid(row=2, column=0)
     global caja_codigo_eliminar
     caja_codigo_eliminar = tk.Entry(eliminar_frame)
-    caja_codigo_eliminar.grid(row=3,column=0)
+    caja_codigo_eliminar.grid(row=3, column=0)
 
-    boton_eliminar = tk.Button(eliminar_frame, text='Eliminar', command=lambda: eliminarProducto(productos))
+    boton_eliminar = tk.Button(eliminar_frame, text='Eliminar', command=lambda: eliminar_producto(productos))
     boton_eliminar.grid(row=4, column=0)
 
     for widget in eliminar_frame.winfo_children():
         widget.grid_configure(padx=10, pady=5)
+
+
 def abrir_venta():
     ventana_venta = tk.Toplevel()
     ventana_venta.title("Venta")
@@ -317,7 +335,7 @@ def abrir_venta():
     nombre_label.grid(row=0, column=0)
     apellido_label = tk.Label(user_info_frame, text="Apellido")
     apellido_label.grid(row=0, column=1)
-    dni_label = tk.Label(user_info_frame,text= 'DNI')
+    dni_label = tk.Label(user_info_frame, text='DNI')
     dni_label.grid(row=2, column=1)
     dire_label = tk.Label(user_info_frame, text='Direccion de envio')
     dire_label.grid(row=2, column=2)
@@ -329,26 +347,21 @@ def abrir_venta():
 
     nombre_entry.grid(row=1, column=0)
     apellido_entry.grid(row=1, column=1)
-    dni_entry.grid(row=3,column=1)
-    dire_entry.grid(row=3,column=2)
-
-
-
+    dni_entry.grid(row=3, column=1)
+    dire_entry.grid(row=3, column=2)
     age_label = tk.Label(user_info_frame, text="Edad")
     age_spinbox = tk.Spinbox(user_info_frame, from_=18, to=110)
     age_label.grid(row=2, column=0)
     age_spinbox.grid(row=3, column=0)
 
-
     for widget in user_info_frame.winfo_children():
         widget.grid_configure(padx=10, pady=5)
-
 
     # producto a comprar
     producto_frame = tk.LabelFrame(frame)
     producto_frame.grid(row=1, column=0, sticky="news", padx=20, pady=10)
 
-    tipo_label = tk.Label(producto_frame,text='#Tipo de producto')
+    tipo_label = tk.Label(producto_frame, text='#Tipo de producto')
     tipo_Entry = tk.Entry(producto_frame)
     tipo_label.grid(row=0, column=1)
     tipo_Entry.grid(row=1, column=1)
@@ -358,16 +371,14 @@ def abrir_venta():
     codigo_label.grid(row=0, column=2)
     codigo_Entry.grid(row=1, column=2)
 
-
     cantidad_label = tk.Label(producto_frame, text="# cantidad")
-    cantidad_spinbox = tk.Spinbox(producto_frame, from_=0, to="infinity")
+    cantidad_spinbox = tk.Spinbox(producto_frame, from_=0, to=999)
     cantidad_label.grid(row=0, column=3)
     cantidad_spinbox.grid(row=1, column=3)
 
-
     verificar_label = tk.Label(producto_frame, text='Verificar cantidad deseada')
     verificar_label.grid(row=0, column=4)
-    verificar_button = tk.Button(producto_frame, text='Verificar', command=lambda: VerificarCantidad(codigo_Entry, cantidad_spinbox, tipo_Entry))
+    verificar_button = tk.Button(producto_frame, text='Verificar', command=lambda: verificarcantidad(codigo_Entry, cantidad_spinbox, tipo_Entry))
     verificar_button.grid(row=1, column=4)
 
     for widget in producto_frame.winfo_children():
@@ -382,14 +393,18 @@ def abrir_venta():
     terms_check.grid(row=0, column=0)
 
     # Button
-    button = tk.Button(frame, text="Continuar", command=lambda : Venta(aceptar_var,nombre_entry,apellido_entry,age_spinbox,dni_entry,dire_entry, codigo_Entry, cantidad_spinbox,tipo_Entry))
+    button = tk.Button(frame, text="Continuar", command=lambda: venta(aceptar_var, nombre_entry, apellido_entry, age_spinbox, dire_entry, codigo_Entry, cantidad_spinbox, tipo_Entry))
     button.grid(row=3, column=0, sticky="news", padx=20, pady=10)
-def listarVentas(ventas):
+
+
+def listarVentas(ventas, productos_vendidos):
     ventana_ventas = tk.Toplevel()
     ventana_ventas.title('Lista de Ventas')
 
     texto_resultado = tk.Text(ventana_ventas)
     texto_resultado.pack()
+
+    # productos vendidos normal
 
     texto_resultado.insert(tk.END, 'Productos Vendidos:\n')
 
@@ -401,17 +416,12 @@ def listarVentas(ventas):
         for c in claves_productos:
             dato = productos_categoria[c]
             texto = f"\nCódigo: {c}\nDescripción: {dato[0]}\nCantidad: {dato[1]}\nCosto: {int(dato[2]) * int(dato[1])}\nFecha de vencimiento: {dato[3]}"
-            texto += "\n" + "-" * 20
+            texto += "\n" + "-" * 20 + '\n'
             texto_resultado.insert(tk.END, texto)
 
     texto_resultado.insert(tk.END, "#" * 50)
 
     # mostrar productos más vendidos de cada sector
-    productos_vendidos = {
-        'frutas': {},
-        'verduras': {},
-        'carnes': {}
-    }
 
     for categoria in ventas.keys():
         productos_categoria = ventas[categoria]
@@ -436,6 +446,8 @@ def listarVentas(ventas):
             texto = f"\nCódigo: {codigo}\nDescripción: {dato[0]}\nCantidad: {cantidad_vendida}\nCosto: {int(dato[2]) * int(cantidad_vendida)}\nFecha de vencimiento: {dato[3]}"
             texto += "\n" + "-" * 20
             texto_resultado.insert(tk.END, texto)
+
+    texto_resultado.insert(tk.END, "#" * 50)
 
     # el producto más vendido en general
     productos_total_vendidos = {}
@@ -477,22 +489,22 @@ img = tk.PhotoImage(file="super.png")
 eti_img = tk.Label(ventana_inicio, image=img)
 eti_img.place(x=310, y=120)
 
-titulo = tk.Label(ventana_inicio, text="La calidad que querés, al precio que buscás", font="helvetica 17",width=100, height=9)
+titulo = tk.Label(ventana_inicio, text="La calidad que querés, al precio que buscás", font="helvetica 17", width=100, height=9)
 titulo.place(x=-130, y=-50)
 
-button_elim = tk.Button(ventana_inicio, text='Eliminar producto', command=abrir_eliminar, width=20,height=9)
-button_elim.place(x=250,y=550)
+button_elim = tk.Button(ventana_inicio, text='Eliminar producto', command=abrir_eliminar, width=20, height=9)
+button_elim.place(x=250, y=550)
 
-button_agr = tk.Button(ventana_inicio, text="Agregar producto",command=abrir_agregar, width=20, height=9)
+button_agr = tk.Button(ventana_inicio, text="Agregar producto", command=abrir_agregar, width=20, height=9)
 button_agr.place(x=90, y=550)
 
 button_venta = tk.Button(ventana_inicio, text="Vender Producto", command=abrir_venta, width=20, height=9)
 button_venta.place(x=410, y=550)
 
-button_listar = tk.Button(ventana_inicio, text="Listar productos", command=lambda: listarProductos(productos,vencidos),width=20, height=9)
+button_listar = tk.Button(ventana_inicio, text="Listar productos", command=lambda: listarProductos(productos, vencidos), width=20, height=9)
 button_listar.place(x=570, y=550)
 
-button_listar_ventas = tk.Button(ventana_inicio, text='Listar Ventas', command=lambda: listarVentas(ventas),width=20,height=9)
+button_listar_ventas = tk.Button(ventana_inicio, text='Listar Ventas', command=lambda: listarVentas(ventas, productos_vendidos), width=20, height=9)
 button_listar_ventas.place(x=730, y=550)
 
 ventana_inicio.mainloop()
