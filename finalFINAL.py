@@ -217,11 +217,11 @@ def ingresarNuevoProducto():
                 productos.update({tipo: {}})
     else:
         tk.messagebox.showwarning(title='Error', message='Falta alguno de los datos requeridos')
-def abrir_agregar_eliminar():
-    ventana_agregar_eliminar = tk.Toplevel()
-    ventana_agregar_eliminar.title("Agregar o Eliminar")
+def abrir_agregar():
+    ventana_agregar = tk.Toplevel()
+    ventana_agregar.title("Agregar o Eliminar")
 
-    frame = tk.Frame(ventana_agregar_eliminar)
+    frame = tk.Frame(ventana_agregar)
     frame.pack()
 
     agregar_frame = tk.LabelFrame(frame, text="Agregar Producto")
@@ -270,6 +270,13 @@ def abrir_agregar_eliminar():
 
     for widget in agregar_frame.winfo_children():
         widget.grid_configure(padx=10, pady=5)
+def abrir_eliminar():
+    ventana_eliminar = tk.Toplevel()
+    ventana_eliminar.title("Agregar o Eliminar")
+
+    frame = tk.Frame(ventana_eliminar)
+    frame.pack()
+
 
     #Eliminar
 
@@ -471,16 +478,19 @@ eti_img.place(x=310, y=120)
 titulo = tk.Label(ventana_inicio, text="La calidad que querés, al precio que buscás", font="helvetica 17",width=100, height=9)
 titulo.place(x=-130, y=-50)
 
-button_agr_elim = tk.Button(ventana_inicio, text="Agregar producto\nEliminar Producto",command=abrir_agregar_eliminar, width=20, height=9)
-button_agr_elim.place(x=200, y=550)
+button_elim = tk.Button(ventana_inicio, text='Eliminar producto', command=abrir_eliminar, width=20,height=9)
+button_elim.place(x=250,y=550)
+
+button_agr = tk.Button(ventana_inicio, text="Agregar producto",command=abrir_agregar, width=20, height=9)
+button_agr.place(x=90, y=550)
 
 button_venta = tk.Button(ventana_inicio, text="Vender Producto", command=abrir_venta, width=20, height=9)
-button_venta.place(x=360, y=550)
+button_venta.place(x=410, y=550)
 
 button_listar = tk.Button(ventana_inicio, text="Listar productos", command=lambda: listarProductos(productos,vencidos),width=20, height=9)
-button_listar.place(x=520, y=550)
+button_listar.place(x=570, y=550)
 
 button_listar_ventas = tk.Button(ventana_inicio, text='Listar Ventas', command=lambda: listarVentas(ventas),width=20,height=9)
-button_listar_ventas.place(x=680, y=550)
+button_listar_ventas.place(x=730, y=550)
 
 ventana_inicio.mainloop()
