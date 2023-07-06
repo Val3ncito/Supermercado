@@ -403,7 +403,7 @@ def listarVentas(ventas):
         productos_categoria = productos_vendidos[categoria]
         for codigo, cantidad_vendida in productos_categoria:
             dato = ventas[categoria][codigo]
-            texto = f"\nCódigo: {codigo}\nDescripción: {dato[0]}\nCantidad: {cantidad_vendida}\nCosto: {int(dato[2]) * cantidad_vendida}\nTipo: {dato[3]}\nFecha de vencimiento: {dato[4]}"
+            texto = f"\nCódigo: {codigo}\nDescripción: {dato[0]}\nCantidad: {cantidad_vendida}\nCosto: {int(dato[2]) * int(cantidad_vendida)}\nTipo: {dato[3]}\nFecha de vencimiento: {dato[4]}"
             texto += "\n" + "=" * 20
             texto_resultado.insert(tk.END, texto)
 
@@ -433,14 +433,14 @@ def listarVentas(ventas):
     dato = ventas[categoria_producto_mas_vendido][producto_mas_vendido]
     texto_resultado.insert(tk.END, f"Descripción: {dato[0]}\n")
     texto_resultado.insert(tk.END, f"Cantidad vendida: {cantidad_mas_vendida}\n")
-    texto_resultado.insert(tk.END, f"Costo total: {int(dato[2]) * cantidad_mas_vendida}\n")
+    texto_resultado.insert(tk.END, f"Costo total: {int(dato[2]) * int(cantidad_mas_vendida)}\n")
     texto_resultado.insert(tk.END, f"Tipo: {dato[3]}\n")
     texto_resultado.insert(tk.END, f"Fecha de vencimiento: {dato[4]}\n")
     texto_resultado.insert(tk.END, "=" * 20)
 
 
 # inicio
-ventana_inicio = tk.Toplevel()
+ventana_inicio = tk.Tk()
 ventana_inicio.title("Inicio")
 ventana_inicio.geometry("1000x700")
 
