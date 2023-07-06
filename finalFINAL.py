@@ -152,7 +152,6 @@ def eliminar_producto(diccionario):
 
 
 def listarProductos(productos, vencidos):
-
     productosVencidos(productos)
 
     ventana_listar = tk.Toplevel()
@@ -218,8 +217,8 @@ def ingresarNuevoProducto():
             valor.append(False)
 
             productos[tipo][codigo] = valor
-
             descuentoproducto(productos)
+
             tk.messagebox.showwarning(title='!!!', message="El producto fue añadido")
         else:
             tipos_nuevos = tk.messagebox.askyesno(title='Atencion', message='Usted esta intentando ingresar un tipo de producto que no esta en nuestra base de datos\nusted quiere agregar este nuevo tipo de producto?')
@@ -246,8 +245,8 @@ def ingresarNuevoProducto():
                 valor.append(False)
 
                 productos[tipo][codigo] = valor
-
                 descuentoproducto(productos)
+
                 tk.messagebox.showwarning(title='!!!', message="El producto fue añadido")
     else:
         tk.messagebox.showwarning(title='Error', message='Falta alguno de los datos requeridos')
@@ -418,6 +417,7 @@ def abrir_venta():
 
 
 def listarVentas(ventas, productos_vendidos):
+
     ventana_ventas = tk.Toplevel()
     ventana_ventas.title('Lista de Ventas')
 
