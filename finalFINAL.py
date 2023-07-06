@@ -37,16 +37,15 @@ def Venta(aceptar_var,nombre_entry,apellido_entry,age_spinbox,dni_entry,dire_ent
         # Usuario
         nombre = nombre_entry.get()
         apellido = apellido_entry.get()
+        edad = age_spinbox.get()
+        dirrecion = dire_entry.get()
 
-        if nombre and apellido:
-            edad = age_spinbox.get()
-            dirrecion = dire_entry.get()
+        # compra
+        tipo = tipo_Entry.get()
+        codigo = codigo_Entry.get()
+        cantidad = cantidad_spinbox.get()
 
-            # compra
-            tipo = tipo_Entry.get()
-            codigo = codigo_Entry.get()
-            cantidad = cantidad_spinbox.get()
-
+        if nombre and apellido and edad and dirrecion and tipo and codigo and cantidad:
             aviso = VerificarCantidad(codigo_Entry, cantidad_spinbox,tipo_Entry)
 
             if (aviso == True):
@@ -60,7 +59,6 @@ def Venta(aceptar_var,nombre_entry,apellido_entry,age_spinbox,dni_entry,dire_ent
                 tk.messagebox.showinfo(title='Ticket', message='------------------------------------------\nNombre: ' + nombre + '/' + 'Apellido: ' + apellido + "\nEdad: " + edad + '/' + "Dirrecion: " + dirrecion + "\ncodigo del producto comprado: " + codigo + "# cantidad: " + cantidad + "\nSu producto sera enviado en dias habiles a la dirrecion " + dirrecion + '\nMuchas gracias por comprar' + '\n------------------------------------------')
             else:
                 tk.messagebox.showwarning(title='Error', message='Hubo algun problema al realizar la compra, Porfavor vuelva a intentar.')
-
             print("------------------------------------------")
             print("Nombre: ", nombre, '/', "Apellido: ", apellido)
             print("Edad: ", edad, '/', "Dirrecion: ", dirrecion)
@@ -70,7 +68,7 @@ def Venta(aceptar_var,nombre_entry,apellido_entry,age_spinbox,dni_entry,dire_ent
             print("------------------------------------------")
 
         else:
-            tk.messagebox.showwarning(title="Error", message="Nombre y Apellido son requeridos.")
+            tk.messagebox.showwarning(title="Error", message="Los datos solicitados son requeridos.")
     else:
         tk.messagebox.showwarning(title="Error", message="No has aceptado los terminos y condiciones")
 def VerificarCantidad(codigo, cant, tip):
@@ -120,18 +118,20 @@ def productosVencidos(diccionario):
 
     for categoria, clave_producto in lista_claves_a_eliminar:
         del diccionario[categoria][clave_producto]
-
 def eliminarProducto(diccionario):
     tipo = caja_tipo_eliminar.get()
     codigo = caja_codigo_eliminar.get()
-    if tipo in diccionario:
-        if codigo in diccionario[tipo]:
-            del diccionario[tipo][codigo]
-            tk.messagebox.showwarning(title='!!!', message="El producto fue eliminado correctamente")
+    if tipo and codigo:
+        if tipo in diccionario:
+            if codigo in diccionario[tipo]:
+                del diccionario[tipo][codigo]
+                tk.messagebox.showwarning(title='!!!', message="El producto fue eliminado correctamente")
+            else:
+                tk.messagebox.showwarning(title='Error',message="El producto con el código ingresado no existe")
         else:
-            tk.messagebox.showwarning(title='Error',message="El producto con el código ingresado no existe")
+            tk.messagebox.showwarning(title='Error', message="El tipo de producto ingresado no existe")
     else:
-        tk.messagebox.showwarning(title='Error', message="El tipo de producto ingresado no existe")
+        tk.messagebox.showwarning(title='Error', message='Falto introducir alguno de los datos')
 def listarProductos(productos, vencidos):
     productosVencidos(productos)
     ventana_listar = tk.Toplevel()
@@ -172,29 +172,32 @@ def ingresarNuevoProducto():
     tipo = tip.lower()
     codigo = e_codigo.get()
     descripcion = e_descripcion.get()
-    stock = int(e_stock.get())
+    stock = 0
     precio_unitario = e_precio_unitario.get()
 
+    if tipo and codigo and descripcion and stock and precio_unitario:
+        stock = int(e_stock.get())
+        while True:
+            try:
+                fecha_vencimiento = e_fecha_de_vencimiento.get()
+                break
+            except ValueError:
+                print("No tiene el formato de fecha adecuado. Intente nuevamente")
 
-    while True:
-        try:
-            fecha_vencimiento = e_fecha_de_vencimiento.get()
-            break
-        except ValueError:
-            print("No tiene el formato de fecha adecuado. Intente nuevamente")
+        valor = []
+        valor.append(descripcion)
+        valor.append(stock)
+        valor.append(precio_unitario)
+        fecha = datetime.strptime(fecha_vencimiento, "%d/%m/%Y")
+        valor.append(fecha)
+        valor.append(False)
 
-    valor = []
-    valor.append(descripcion)
-    valor.append(stock)
-    valor.append(precio_unitario)
-    fecha = datetime.strptime(fecha_vencimiento, "%d/%m/%Y")
-    valor.append(fecha)
-    valor.append(False)
+        productos[tipo][codigo] = valor
 
-    productos[tipo][codigo] = valor
-
-    descuentoProducto(productos)
-    tk.messagebox.showwarning(title='!!!', message="El producto fue añadido")
+        descuentoProducto(productos)
+        tk.messagebox.showwarning(title='!!!', message="El producto fue añadido")
+    else:
+        tk.messagebox.showwarning(title='Error', message='Falta alguno de los datos requeridos')
 def abrir_agregar_eliminar():
     ventana_agregar_eliminar = tk.Toplevel()
     ventana_agregar_eliminar.geometry('300x300')
