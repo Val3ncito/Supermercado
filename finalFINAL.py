@@ -101,22 +101,6 @@ def verificarcantidad(codigo, cant, tip):
             return False
 
 
-def descuentoproducto(diccionario):
-    fecha_actual = datetime.now().date()
-
-    for categoria in diccionario.values():
-        for producto in categoria.values():
-            fecha_vencimiento = producto[3].date()
-            prueba = fecha_vencimiento - fecha_actual
-
-            if 0 < prueba.days <= 7:
-                precio_str = producto[2]
-                precio = float(precio_str)
-                descuento = precio * 0.1
-                producto[2] = str(precio - descuento)
-                producto[4] = True
-
-
 def productosVencidos(diccionario):
     fecha_actual = datetime.now()
     lista_claves_a_eliminar = []
@@ -169,7 +153,7 @@ def listarProductos(productos, vencidos):
         claves_productos = productos_categoria.keys()
         for c in claves_productos:
             dato = productos_categoria[c]
-            texto = f"\nCódigo: {c}\nDescripción: {dato[0]}\nStock: {dato[1]}\nPrecio: {dato[2]}\nFecha de vencimiento: {dato[3]}"
+            texto = f"\nCódigo: {c}\nDescripción: {dato[0]}\nStock: {dato[1]}\nPrecio: {dato[2]}\nFecha de vencimiento: {dato[3]}\nTiene descuento: {dato[4]}"
             texto += "\n" + "-" * 20
             texto_resultado.insert(tk.END, texto)
 
@@ -191,6 +175,7 @@ def listarProductos(productos, vencidos):
 
 
 def ingresarNuevoProducto():
+    fecha_actual = datetime.now().date()
     tip = e_tipo.get()
     tipo = tip.lower()
     codigo = e_codigo.get()
@@ -214,10 +199,22 @@ def ingresarNuevoProducto():
             valor.append(precio_unitario)
             fecha = datetime.strptime(fecha_vencimiento, "%d/%m/%Y")
             valor.append(fecha)
-            valor.append(False)
+            valor.append('NO')
+
+            # descuento vencimiento en 7 dias
+
+            fecha_vencimiento = fecha.date()
+            prueba = fecha_vencimiento - fecha_actual
+
+            if 0 < prueba.days <= 7:
+                precio_str = valor[2]
+                precio = float(precio_str)
+                descuento = precio * 0.1
+                valor[2] = str(precio - descuento)
+                valor[4] = 'SI'
 
             productos[tipo][codigo] = valor
-            descuentoproducto(productos)
+            #descuentoproducto(productos)
 
             tk.messagebox.showwarning(title='!!!', message="El producto fue añadido")
         else:
@@ -242,10 +239,22 @@ def ingresarNuevoProducto():
                 valor.append(precio_unitario)
                 fecha = datetime.strptime(fecha_vencimiento, "%d/%m/%Y")
                 valor.append(fecha)
-                valor.append(False)
+                valor.append('NO')
+
+                # descuento vencimiento en 7 dias
+
+                fecha_vencimiento = fecha.date()
+                prueba = fecha_vencimiento - fecha_actual
+
+                if 0 < prueba.days <= 7:
+                    precio_str = valor[2]
+                    precio = float(precio_str)
+                    descuento = precio * 0.1
+                    valor[2] = str(precio - descuento)
+                    valor[4] = 'SI'
 
                 productos[tipo][codigo] = valor
-                descuentoproducto(productos)
+                #descuentoproducto(productos)
 
                 tk.messagebox.showwarning(title='!!!', message="El producto fue añadido")
     else:
