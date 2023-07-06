@@ -189,25 +189,32 @@ def ingresarNuevoProducto():
 
     if tipo and codigo and descripcion and precio_unitario:
         stock = int(e_stock.get())
-        while True:
-            try:
-                fecha_vencimiento = e_fecha_de_vencimiento.get()
-                break
-            except ValueError:
-                print("No tiene el formato de fecha adecuado. Intente nuevamente")
 
-        valor = []
-        valor.append(descripcion)
-        valor.append(stock)
-        valor.append(precio_unitario)
-        fecha = datetime.strptime(fecha_vencimiento, "%d/%m/%Y")
-        valor.append(fecha)
-        valor.append(False)
+        if tipo in productos:
+            while True:
+                try:
+                    fecha_vencimiento = e_fecha_de_vencimiento.get()
+                    break
+                except ValueError:
+                    print("No tiene el formato de fecha adecuado. Intente nuevamente")
 
-        productos[tipo][codigo] = valor
+            valor = []
+            valor.append(descripcion)
+            valor.append(stock)
+            valor.append(precio_unitario)
+            fecha = datetime.strptime(fecha_vencimiento, "%d/%m/%Y")
+            valor.append(fecha)
+            valor.append(False)
 
-        descuentoProducto(productos)
-        tk.messagebox.showwarning(title='!!!', message="El producto fue añadido")
+            productos[tipo][codigo] = valor
+
+            descuentoProducto(productos)
+            tk.messagebox.showwarning(title='!!!', message="El producto fue añadido")
+        else:
+            tipos_nuevos = tk.messagebox.askyesno(title='Atencion', message='Usted esta intentando ingresar un tipo de producto que no esta en nuestra base de datos\nusted quiere agregar este nuevo tipo de producto?')
+
+            if tipos_nuevos:
+                productos.update({tipo: {}})
     else:
         tk.messagebox.showwarning(title='Error', message='Falta alguno de los datos requeridos')
 def abrir_agregar_eliminar():
