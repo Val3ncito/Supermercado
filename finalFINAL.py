@@ -40,10 +40,13 @@ def Venta(aceptar_var,nombre_entry,apellido_entry,age_spinbox,dni_entry,dire_ent
         edad = age_spinbox.get()
         dirrecion = dire_entry.get()
 
+
         # compra
         tipo = tipo_Entry.get()
         codigo = codigo_Entry.get()
         cantidad = cantidad_spinbox.get()
+
+        relleno = productos[tipo][codigo][1]
 
         if nombre and apellido and edad and dirrecion and tipo and codigo and cantidad:
             aviso = VerificarCantidad(codigo_Entry, cantidad_spinbox,tipo_Entry)
@@ -52,20 +55,29 @@ def Venta(aceptar_var,nombre_entry,apellido_entry,age_spinbox,dni_entry,dire_ent
                 ventas[tipo][codigo] = productos[tipo][codigo].copy()
                 ventas[tipo][codigo][1] = cantidad
                 productos[tipo][codigo][1] = int(productos[tipo][codigo][1]) - int(cantidad)
-                print(ventas)
+
                 if (productos[tipo][codigo][1] == 0):
                     del productos[tipo][codigo]
+                elif(productos[tipo][codigo][1] <= 10):
+                    rellenar = tk.messagebox.askyesno(title='Aviso',message='Se esta quedando sin stock del producto\n\nDesea rellenar el stock?')
 
+                    if rellenar:
+                        productos[tipo][codigo][1] = relleno
+
+                #impresion ticket en un mensaje
                 tk.messagebox.showinfo(title='Ticket', message='------------------------------------------\nNombre: ' + nombre + '/' + 'Apellido: ' + apellido + "\nEdad: " + edad + '/' + "Dirrecion: " + dirrecion + "\ncodigo del producto comprado: " + codigo + "# cantidad: " + cantidad + "\nSu producto sera enviado en dias habiles a la dirrecion " + dirrecion + '\nMuchas gracias por comprar' + '\n------------------------------------------')
+
+                #impresion ticket en consola
+                print("------------------------------------------")
+                print("Nombre: ", nombre, '/', "Apellido: ", apellido)
+                print("Edad: ", edad, '/', "Dirrecion: ", dirrecion)
+                print("codigo del producto comprado: ", codigo, "# cantidad: ", cantidad)
+                print("Su producto sera enviado en dias habiles a la dirrecion", dirrecion)
+                print('Muchas gracias por comprar')
+                print("------------------------------------------")
             else:
                 tk.messagebox.showwarning(title='Error', message='Hubo algun problema al realizar la compra, Porfavor vuelva a intentar.')
-            print("------------------------------------------")
-            print("Nombre: ", nombre, '/', "Apellido: ", apellido)
-            print("Edad: ", edad, '/', "Dirrecion: ", dirrecion)
-            print("codigo del producto comprado: ", codigo, "# cantidad: ", cantidad)
-            print("Su producto sera enviado en dias habiles a la dirrecion", dirrecion)
-            print('Muchas gracias por comprar')
-            print("------------------------------------------")
+
 
         else:
             tk.messagebox.showwarning(title="Error", message="Los datos solicitados son requeridos.")
@@ -175,7 +187,7 @@ def ingresarNuevoProducto():
     stock = 0
     precio_unitario = e_precio_unitario.get()
 
-    if tipo and codigo and descripcion and stock and precio_unitario:
+    if tipo and codigo and descripcion and precio_unitario:
         stock = int(e_stock.get())
         while True:
             try:
