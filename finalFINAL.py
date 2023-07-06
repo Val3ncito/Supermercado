@@ -216,7 +216,7 @@ def ingresarNuevoProducto():
             productos[tipo][codigo] = valor
             #descuentoproducto(productos)
 
-            tk.messagebox.showwarning(title='!!!', message="El producto fue añadido")
+            tk.messagebox.showinfo(title='!!!', message="El producto fue añadido")
         else:
             tipos_nuevos = tk.messagebox.askyesno(title='Atencion', message='Usted esta intentando ingresar un tipo de producto que no esta en nuestra base de datos\nusted quiere agregar este nuevo tipo de producto?')
 
@@ -256,7 +256,7 @@ def ingresarNuevoProducto():
                 productos[tipo][codigo] = valor
                 #descuentoproducto(productos)
 
-                tk.messagebox.showwarning(title='!!!', message="El producto fue añadido")
+                tk.messagebox.showinfo(title='!!!', message="El producto fue añadido")
     else:
         tk.messagebox.showwarning(title='Error', message='Falta alguno de los datos requeridos')
 
@@ -507,7 +507,6 @@ def listarVentas(ventas, productos_vendidos):
     texto_resultado.insert(tk.END, f"Costo total: {int(dato[2]) * int(cantidad_mas_vendida)}\n")
     texto_resultado.insert(tk.END, f"Fecha de vencimiento: {dato[3]}\n")
     texto_resultado.insert(tk.END, "-" * 20)
-
 
 # inicio
 ventana_inicio = tk.Tk()
