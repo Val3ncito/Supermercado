@@ -229,6 +229,26 @@ def ingresarNuevoProducto():
                 vencidos.update({tipo: {}})
                 ventas.update({tipo: {}})
                 productos_vendidos.update({tipo: {}})
+
+                while True:
+                    try:
+                        fecha_vencimiento = e_fecha_de_vencimiento.get()
+                        break
+                    except ValueError:
+                        print("No tiene el formato de fecha adecuado. Intente nuevamente")
+
+                valor = []
+                valor.append(descripcion)
+                valor.append(stock)
+                valor.append(precio_unitario)
+                fecha = datetime.strptime(fecha_vencimiento, "%d/%m/%Y")
+                valor.append(fecha)
+                valor.append(False)
+
+                productos[tipo][codigo] = valor
+
+                descuentoproducto(productos)
+                tk.messagebox.showwarning(title='!!!', message="El producto fue añadido")
     else:
         tk.messagebox.showwarning(title='Error', message='Falta alguno de los datos requeridos')
 
