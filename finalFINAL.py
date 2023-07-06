@@ -219,7 +219,8 @@ def ingresarNuevoProducto():
         tk.messagebox.showwarning(title='Error', message='Falta alguno de los datos requeridos')
 def abrir_agregar():
     ventana_agregar = tk.Toplevel()
-    ventana_agregar.title("Agregar o Eliminar")
+    ventana_agregar.geometry('300x500')
+    ventana_agregar.title("Agregar")
 
     frame = tk.Frame(ventana_agregar)
     frame.pack()
@@ -272,7 +273,8 @@ def abrir_agregar():
         widget.grid_configure(padx=10, pady=5)
 def abrir_eliminar():
     ventana_eliminar = tk.Toplevel()
-    ventana_eliminar.title("Agregar o Eliminar")
+    ventana_eliminar.geometry('300x200')
+    ventana_eliminar.title("Eliminar")
 
     frame = tk.Frame(ventana_eliminar)
     frame.pack()
