@@ -508,6 +508,7 @@ def listarVentas(ventas, productos_vendidos):
     texto_resultado.insert(tk.END, f"Fecha de vencimiento: {dato[3]}\n")
     texto_resultado.insert(tk.END, "-" * 20)
 
+
 # inicio
 ventana_inicio = tk.Tk()
 ventana_inicio.title("Inicio")
